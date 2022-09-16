@@ -17,6 +17,7 @@ public class TurrelController : UnitController
         if (PlayerController.Instance == null)
             return;
 
+        //if(GetDistToPlayer() <= distantionAttack)
         transform.LookAt(new Vector3(PlayerController.Instance.transform.position.x, transform.position.y, PlayerController.Instance.transform.position.z));
     }
 

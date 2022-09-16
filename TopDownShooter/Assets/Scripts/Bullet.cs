@@ -7,6 +7,11 @@ public class Bullet : MonoBehaviour
     public float speed;
     public float damage;
 
+    void Start()
+    {
+        Destroy(this.gameObject, 5.0f);
+    }
+
     void Update()
     {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);     
@@ -17,7 +22,9 @@ public class Bullet : MonoBehaviour
         if(other.gameObject.GetComponent<Health>() != null)
         {
             other.gameObject.GetComponent<Health>().Damage(damage);
-            Destroy(this.gameObject);
+            
         }
+
+        Destroy(this.gameObject);
     }
 }
