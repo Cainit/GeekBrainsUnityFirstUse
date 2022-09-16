@@ -88,6 +88,7 @@ public class PlayerController : UnitController
     void FixedUpdate()
     {
         rb.velocity = moveDirection;
+        
         transform.LookAt(cursorPosition);
     }
 
