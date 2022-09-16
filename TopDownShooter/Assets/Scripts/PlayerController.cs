@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : UnitController
 {
+    public static PlayerController Instance;
+
     //Player variables
     public Camera playerCamera;
     public Gun gunController;
@@ -18,6 +20,10 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+        Instance = this;
+
+        GetComponent<Health>().OnDamage += OnHit;
     }
     
 

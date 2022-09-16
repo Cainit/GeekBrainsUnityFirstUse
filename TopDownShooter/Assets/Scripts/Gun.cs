@@ -23,18 +23,18 @@ public class Gun : MonoBehaviour
     {
         if (isFiring)
         {
-            fireTimer -= Time.deltaTime;
+            fireTimer += Time.deltaTime * fireRate;
 
-            if (fireTimer <= 0)
+            if (fireTimer >= 1)
             {
-                fireTimer = fireRate;
+                fireTimer = 0;
                 Bullet newBullet = Instantiate(bulletPref, firePoint.position, firePoint.rotation);
                 //newBullet.speed = 15;
             }
         }
         else
         {
-            fireTimer = 0;
+            fireTimer = 1;
         }
 
 
