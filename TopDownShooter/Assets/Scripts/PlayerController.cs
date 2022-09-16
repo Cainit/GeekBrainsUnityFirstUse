@@ -16,6 +16,24 @@ public class PlayerController : UnitController
     Vector3 cursorPosition = new Vector3();
     Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
+    List<int> Keys = new List<int>();
+
+    public void AddKey(int newkey)
+    {
+        Keys.Add(newkey);
+    }
+
+    public bool IsKey(int keyComp)
+    {
+        foreach(int key in Keys)
+        {
+            if (key == keyComp)
+                return true;
+        }
+
+        return false;
+    }
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();

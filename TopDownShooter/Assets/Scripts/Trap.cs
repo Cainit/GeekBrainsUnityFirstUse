@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trap : MonoBehaviour
+public class Trap : Interactable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float damage;
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag == "Player" || other.tag == "Enemy")
+        {
+            PlayerController.Instance.GetComponent<Health>().Damage(damage);
+            GetComponent<Collider>().enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
+            PlayGetUp();
+            Destroy(this.gameObject, 3.0f);
+        }
     }
 }

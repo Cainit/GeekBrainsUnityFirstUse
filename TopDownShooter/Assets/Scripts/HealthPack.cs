@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPack : MonoBehaviour
+public class HealthPack : Interactable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float heal;
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        
+        if(other.tag == "Player" && PlayerController.Instance.GetComponent<Health>().IsNeedHeal())
+        {
+            PlayerController.Instance.GetComponent<Health>().Heal(heal);
+            GetComponent<Collider>().enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
+            PlayGetUp();
+            Destroy(this.gameObject, 3.0f);
+        }
     }
 }

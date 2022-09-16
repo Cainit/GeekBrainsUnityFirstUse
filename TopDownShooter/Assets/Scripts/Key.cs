@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Key : MonoBehaviour
+public class Key : Interactable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int keyID;
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag == "Player")
+        {
+            PlayerController.Instance.AddKey(keyID);
+            GetComponent<Collider>().enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
+            PlayGetUp();
+            Destroy(this.gameObject, 3.0f);
+        }
     }
 }
