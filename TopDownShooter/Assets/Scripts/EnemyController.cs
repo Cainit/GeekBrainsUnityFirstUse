@@ -66,6 +66,8 @@ public class EnemyController : UnitController
     {
         animator.SetTrigger("Hit");
 
+        PlaySoundHit();
+
         if (!GetComponent<Health>().IsLive())
             Death();
     }
@@ -81,6 +83,7 @@ public class EnemyController : UnitController
 
     override public void Death()
     {
+        PlaySoundDeath();
         animator.SetBool("Death", true);
         GetComponent<Collider>().enabled = false;
         rb.detectCollisions = false;

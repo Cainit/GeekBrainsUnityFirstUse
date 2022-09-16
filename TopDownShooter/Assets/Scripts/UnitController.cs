@@ -8,6 +8,11 @@ public class UnitController : MonoBehaviour
     public float speedMove;
     public float distantionAttack;
     public float damage;
+    
+    [SerializeField] List<AudioClip> soundsAggro;
+    [SerializeField] List<AudioClip> soundsAttack;
+    [SerializeField] List<AudioClip> soundsHit;
+    [SerializeField] List<AudioClip> soundsDeath;
 
     public float GetDistToPlayer()
     {
@@ -29,5 +34,34 @@ public class UnitController : MonoBehaviour
     {
         
         print("attack!");
+    }
+
+    public void PlaySoundHit()
+    {
+        PlaySoundRandom(soundsHit);
+    }
+
+    public void PlaySoundDeath()
+    {
+        PlaySoundRandom(soundsDeath);
+    }
+
+    public void PlaySoundAttack()
+    {
+        PlaySoundRandom(soundsAttack);
+    }
+
+    public void PlaySoundAggro()
+    {
+        PlaySoundRandom(soundsAggro);
+    }
+
+    public void PlaySoundRandom(List<AudioClip> listSounds)
+    {
+        if (listSounds.Count < 1)
+            return;
+
+        AudioSource source = GetComponent<AudioSource>();
+        source.PlayOneShot(listSounds[UnityEngine.Random.Range(0, listSounds.Count)]);
     }
 }
