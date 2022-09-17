@@ -22,6 +22,8 @@ public class Health : MonoBehaviour
         if (health < 0)
             health = 0;
 
+        FloatTextManager.Instance.ShowDamage(transform.position + new Vector3(0,1,0), damage);
+
         OnChange?.Invoke(this, EventArgs.Empty);
         OnDamage?.Invoke(this, EventArgs.Empty);
     }
