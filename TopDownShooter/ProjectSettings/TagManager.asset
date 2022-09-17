@@ -9,6 +9,7 @@ TagManager:
   - Door
   - Trap
   - Trigger
+  - Waypoint
   layers:
   - Default
   - TransparentFX

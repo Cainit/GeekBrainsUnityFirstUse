@@ -6,26 +6,26 @@ using System;
 
 public class EnemyController : UnitController
 {
-    //Player variables
     public Gun gun;
     Animator animator;
-    //Rigidbody rb;
     NavMeshAgent agentNav;
-    
+    Transform currentPatrolPoint;
+
     bool attackReady = true;
-    
+
     void Awake()
     {
-        //rb = GetComponent<Rigidbody>();
-        //rb.freezeRotation = true;
-        
         GetComponent<Health>().OnDamage += OnHit;
         animator = GetComponent<Animator>();
         agentNav = GetComponent<NavMeshAgent>();
-        
+        if(patrolPoints.Count == 1)
+        {
+            GameObject newWayPoint = new GameObject();
+            newWayPoint.tag = "Waypoint";
+            newWayPoint.transform.position = transform.position;
+            patrolPoints.Add(newWayPoint.transform);
+        }
     }
-
-
 
     void Update()
     {
@@ -41,7 +41,7 @@ public class EnemyController : UnitController
         if (distance > distantionAttack && distance <= distantionAggro) Aggro();
         if (distance <= distantionAttack) StartAttack();
 
-        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             agentNav.isStopped = true;
         else
             agentNav.isStopped = false;
@@ -54,14 +54,49 @@ public class EnemyController : UnitController
     {
         if (PlayerController.Instance == null || !GetComponent<Health>().IsLive())
             return;
-        
-
     }
 
     void Patrol()
     {
-        agentNav.SetDestination(transform.position);
+        if (currentPatrolPoint == null)
+        {
+            GetNextPatrolPoint();
+        }
+        else
+        {
+            Vector3 distanceToWalkPoint = transform.position - currentPatrolPoint.position;
+            if (distanceToWalkPoint.magnitude < 1f)
+            {
+                GetNextPatrolPoint();
+            }
+        }
+
+
+        if (currentPatrolPoint != null)
+            agentNav.SetDestination(currentPatrolPoint.position);
+        else
+            agentNav.SetDestination(transform.position);
     }
+
+    Transform GetNextPatrolPoint()
+    {
+        if (patrolPoints.Count <= 1)
+            return null;
+
+        if (currentPatrolPoint == null)
+            currentPatrolPoint = patrolPoints[0];
+        else
+        {
+            int i = patrolPoints.IndexOf(currentPatrolPoint);
+            if (i + 1 < patrolPoints.Count)
+                currentPatrolPoint = patrolPoints[i + 1];
+            else
+                currentPatrolPoint = patrolPoints[0];
+        }
+
+        return currentPatrolPoint;
+    }
+
 
     void Aggro()
     {
@@ -113,8 +148,6 @@ public class EnemyController : UnitController
         PlaySoundDeath();
         animator.SetBool("Death", true);
         GetComponent<Collider>().enabled = false;
-        //rb.detectCollisions = false;
-        //rb.isKinematic = true;
         agentNav.isStopped = true;
 
         Destroy(this.gameObject, 5f);

@@ -16,6 +16,8 @@ public class UnitController : MonoBehaviour
     [SerializeField] List<AudioClip> soundsHit;
     [SerializeField] List<AudioClip> soundsDeath;
 
+    [SerializeField] public List<Transform> patrolPoints;
+
     public float GetDistToPlayer()
     {
         return Vector3.Distance(PlayerController.Instance.transform.position, transform.position);
