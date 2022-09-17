@@ -13,6 +13,9 @@ public class EnemyController : UnitController
 
     bool attackReady = true;
 
+    private float minimalAggroTime = 15f;
+    private float currentAggroTime = 0;
+
     void Awake()
     {
         GetComponent<Health>().OnDamage += OnHit;
@@ -32,13 +35,16 @@ public class EnemyController : UnitController
         if (PlayerController.Instance == null || !GetComponent<Health>().IsLive())
             return;
 
+        if (currentAggroTime >= 0)
+            currentAggroTime -= 1.0f * Time.deltaTime;
+
         animator.ResetTrigger("Hit");
         animator.ResetTrigger("Attack");
 
         float distance = GetDistToPlayer();
 
-        if (distance > distantionAttack && distance > distantionAggro) Patrol();
-        if (distance > distantionAttack && distance <= distantionAggro) Aggro();
+        if (distance > distantionAttack && distance > distantionAggro && currentAggroTime <= 0f) Patrol();
+        if (distance > distantionAttack && (distance <= distantionAggro || currentAggroTime > 0f)) Aggro();
         if (distance <= distantionAttack) StartAttack();
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
@@ -101,6 +107,8 @@ public class EnemyController : UnitController
     void Aggro()
     {
         agentNav.SetDestination(PlayerController.Instance.transform.position);
+        if(currentAggroTime <= 0)
+            currentAggroTime = minimalAggroTime;
     }
 
     void StartAttack()
@@ -126,9 +134,10 @@ public class EnemyController : UnitController
     override public void OnHit(object sender, EventArgs args)
     {
         animator.SetTrigger("Hit");
-        
-        
+  
         PlaySoundHit();
+
+        currentAggroTime = minimalAggroTime;
 
         if (!GetComponent<Health>().IsLive())
             Death();

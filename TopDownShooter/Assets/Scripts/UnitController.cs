@@ -6,9 +6,9 @@ using System;
 public class UnitController : MonoBehaviour
 {
     public float speedMove;
-    public float distantionAggro;
-    public float distantionAttack;
     public float damage;
+    public float distantionAttack;
+    public float distantionAggro;
     public float attackReadyTime = 0.8f;
 
     [SerializeField] List<AudioClip> soundsAggro;
