@@ -11,6 +11,9 @@ public class Gun : MonoBehaviour
     private float fireTimer;
 
     public Transform firePoint;
+    [SerializeField]
+    public List<AudioClip> shootSounds = new List<AudioClip>();
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +31,7 @@ public class Gun : MonoBehaviour
             if (fireTimer >= 1)
             {
                 fireTimer = 0;
-                Bullet newBullet = Instantiate(bulletPref, firePoint.position, firePoint.rotation);
+                Shoot();
                 //newBullet.speed = 15;
             }
         }
@@ -36,7 +39,20 @@ public class Gun : MonoBehaviour
         {
             fireTimer = 1;
         }
+    }
 
+    public void Shoot()
+    {
+        Bullet newBullet = Instantiate(bulletPref, firePoint.position, firePoint.rotation);
+        PlaySoundRandom(shootSounds);
+    }
 
+    public void PlaySoundRandom(List<AudioClip> listSounds)
+    {
+        if (listSounds.Count < 1)
+            return;
+
+        AudioSource source = GetComponent<AudioSource>();
+        source.PlayOneShot(listSounds[UnityEngine.Random.Range(0, listSounds.Count)]);
     }
 }
