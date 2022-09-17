@@ -5,6 +5,7 @@ using UnityEngine;
 public class Key : Interactable
 {
     public int keyID;
+    public GameObject keyPrefab;
 
     void OnTriggerEnter(Collider other)
     {
@@ -14,6 +15,7 @@ public class Key : Interactable
             GetComponent<Collider>().enabled = false;
             GetComponent<MeshRenderer>().enabled = false;
             PlayGetUp();
+            KeyInventory.Instance.AddKey(keyPrefab, keyID);
             Destroy(this.gameObject, 3.0f);
         }
     }

@@ -113,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   getUpSound: {fileID: 8300000, guid: 1eb48cfea9aaf9848b3f6695e868ff55, type: 3}
   keyID: 0
+  keyPrefab: {fileID: 9110329837699997769, guid: eee7f30299d039b40bf89809a0ffd27d, type: 3}
 --- !u!82 &-5324148551968578964
 AudioSource:
   m_ObjectHideFlags: 0
