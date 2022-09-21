@@ -6,6 +6,7 @@ public class Door : MonoBehaviour
 {
     public float speedOpen = 1.0f;
     public int NeedKey = -1;
+    [SerializeField] Trigger NeedTrigger = null;
 
     bool Opend = false;
     float Timer = 0;
@@ -53,6 +54,9 @@ public class Door : MonoBehaviour
         if(other.tag == "Player" && !Opend)
         {
             if (NeedKey != -1 && !PlayerController.Instance.IsKey(NeedKey))
+                return;
+
+            if (NeedTrigger != null && !NeedTrigger.GetTrigger())
                 return;
 
             Opend = true;
