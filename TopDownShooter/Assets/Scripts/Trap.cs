@@ -10,7 +10,7 @@ public class Trap : Interactable
     {
         if (other.tag == "Player" || other.tag == "Enemy")
         {
-            PlayerController.Instance.GetComponent<Health>().Damage(damage);
+            other.GetComponent<Health>().Damage(damage);
             GetComponent<Collider>().enabled = false;
             GetComponent<MeshRenderer>().enabled = false;
             PlayGetUp();

@@ -9,6 +9,7 @@ public class PlayerController : UnitController
     //Player variables
     public Camera playerCamera;
     public Gun gunController;
+    public Grenade grenadePrefab;
     float moveSpeed = 5.0f;
     Rigidbody rb;
 
@@ -44,12 +45,16 @@ public class PlayerController : UnitController
         GetComponent<Health>().OnDamage += OnHit;
     }
     
-
-    void Start()
+    void ThrowGrenade()
     {
-        
-    }
+        Grenade grenade = Instantiate(grenadePrefab, this.transform.position+(Vector3.up*2.5f), Quaternion.identity, this.transform.parent);
 
+        Rigidbody rbGrenade = grenade.GetComponent<Rigidbody>();
+
+        Vector3 addForce = transform.forward * 5;
+
+        rbGrenade.AddForce(addForce, ForceMode.Impulse);
+    }
     
     void Update()
     {
@@ -82,6 +87,10 @@ public class PlayerController : UnitController
         if (Input.GetMouseButtonUp(0))
         {
             gunController.isFiring = false;
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            ThrowGrenade();
         }
     }
 
