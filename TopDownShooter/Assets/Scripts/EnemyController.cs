@@ -41,9 +41,11 @@ public class EnemyController : UnitController
 
         float distance = GetDistToPlayer();
 
-        if (distance > distantionAttack && distance > distantionAggro && currentAggroTime <= 0f) Patrol();
-        if (distance > distantionAttack && (CheckVisibleZone() || currentAggroTime > 0f)) Aggro();
-        if (distance <= distantionAttack) StartAttack();
+        bool playerVisibility = CheckVisibleZone();
+
+        if (distance > distantionAttack && (distance > distantionAggro || !playerVisibility) && currentAggroTime <= 0f) Patrol();
+        if (distance > distantionAttack && (playerVisibility || currentAggroTime > 0f)) Aggro();
+        if (distance <= distantionAttack && currentAggroTime > 0f) StartAttack();
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             agentNav.isStopped = true;
@@ -112,7 +114,9 @@ public class EnemyController : UnitController
             {
                 if(hitResult.collider.gameObject == PlayerController.Instance.gameObject)
                 {
-                    return true;
+                    print(Vector3.Angle(transform.forward, PlayerController.Instance.transform.position - transform.position));
+                    if(Vector3.Angle(transform.forward, PlayerController.Instance.transform.position - transform.position) <= 70)
+                        return true;
                 }
             }
         }
