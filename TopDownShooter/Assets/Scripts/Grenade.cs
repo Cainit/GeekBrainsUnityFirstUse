@@ -30,15 +30,17 @@ public class Grenade : MonoBehaviour
 
         GetComponent<MeshRenderer>().enabled = false;
 
+        Destroy(this.gameObject);
+
         //explosion hits
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, maxRadius, Vector3.up);
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position + new Vector3(0,0.5f,0), maxRadius, Vector3.up);
         foreach(RaycastHit hit in hits)
         {
             if (hit.transform.gameObject == this)
                 continue;
 
             GameObject obj = hit.transform.gameObject;
-            float distanceFactor = Mathf.Clamp(Vector3.Distance(transform.position, obj.transform.position), 0, maxRadius) / maxRadius;
+            float distanceFactor = 1f - Mathf.Clamp(Vector3.Distance(transform.position, obj.transform.position), 0, maxRadius) / maxRadius;
 
             if (obj.GetComponent<Health>() != null)
                 obj.GetComponent<Health>().Damage(damage * distanceFactor);
@@ -48,8 +50,8 @@ public class Grenade : MonoBehaviour
             {
                 Vector3 direction = obj.transform.position - transform.position;
                 
-                Vector3 addForce = direction * (10f) * distanceFactor;
-                Vector3 upForce = Vector3.up * 3f * distanceFactor;
+                Vector3 addForce = direction * (50f) * distanceFactor;
+                Vector3 upForce = Vector3.up * 10f * distanceFactor;
                 rb.AddForce(addForce + upForce, ForceMode.Impulse);
                 print(distanceFactor);
             }

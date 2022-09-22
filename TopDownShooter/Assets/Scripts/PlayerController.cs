@@ -51,7 +51,7 @@ public class PlayerController : UnitController
 
         Rigidbody rbGrenade = grenade.GetComponent<Rigidbody>();
 
-        Vector3 addForce = transform.forward * 5;
+        Vector3 addForce = transform.forward * 10f;
 
         rbGrenade.AddForce(addForce, ForceMode.Impulse);
     }

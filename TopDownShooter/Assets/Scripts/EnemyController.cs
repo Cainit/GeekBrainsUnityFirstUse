@@ -21,7 +21,8 @@ public class EnemyController : UnitController
         GetComponent<Health>().OnDamage += OnHit;
         animator = GetComponent<Animator>();
         agentNav = GetComponent<NavMeshAgent>();
-        if(patrolPoints.Count == 1)
+        GetComponent<Rigidbody>().freezeRotation = true;
+        if (patrolPoints.Count == 1)
         {
             GameObject newWayPoint = new GameObject();
             newWayPoint.tag = "Waypoint";
@@ -37,9 +38,6 @@ public class EnemyController : UnitController
 
         if (currentAggroTime >= 0)
             currentAggroTime -= 1.0f * Time.deltaTime;
-
-        animator.ResetTrigger("Hit");
-        animator.ResetTrigger("Attack");
 
         float distance = GetDistToPlayer();
 
@@ -157,6 +155,8 @@ public class EnemyController : UnitController
         PlaySoundDeath();
         animator.SetBool("Death", true);
         GetComponent<Collider>().enabled = false;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().isKinematic = true;
         agentNav.isStopped = true;
 
         Destroy(this.gameObject, 5f);
