@@ -42,7 +42,7 @@ public class EnemyController : UnitController
         float distance = GetDistToPlayer();
 
         if (distance > distantionAttack && distance > distantionAggro && currentAggroTime <= 0f) Patrol();
-        if (distance > distantionAttack && (distance <= distantionAggro || currentAggroTime > 0f)) Aggro();
+        if (distance > distantionAttack && (CheckVisibleZone() || currentAggroTime > 0f)) Aggro();
         if (distance <= distantionAttack) StartAttack();
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
@@ -101,6 +101,24 @@ public class EnemyController : UnitController
         return currentPatrolPoint;
     }
 
+    bool CheckVisibleZone()
+    {
+        if (GetDistToPlayer() <= distantionAggro)
+        {
+            Vector3 upHalf = new Vector3(0,0.5f,0);
+            Ray rayHit = new Ray(transform.position + upHalf, (PlayerController.Instance.transform.position + upHalf) - (transform.position + upHalf));
+            RaycastHit hitResult;
+            if (Physics.Raycast(rayHit, out hitResult, distantionAggro))
+            {
+                if(hitResult.collider.gameObject == PlayerController.Instance.gameObject)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     void Aggro()
     {
