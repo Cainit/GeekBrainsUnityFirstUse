@@ -10,6 +10,20 @@ public class Interactable : MonoBehaviour
     {
         if(getUpSound)
             PlaySound(getUpSound);
+
+        if(GetComponentInChildren<Light>() != null)
+        {
+            StartCoroutine(HideLight(GetComponentInChildren<Light>()));
+        }
+    }
+
+    IEnumerator HideLight(Light light)
+    {
+        for (float lightDist = light.range; lightDist >= 0; lightDist -= 0.05f)
+        {
+            light.range = lightDist;
+            yield return null;
+        }
     }
 
     public void PlaySound(AudioClip clip)

@@ -19,6 +19,8 @@ public class PlayerController : UnitController
     Vector3 cursorPosition = new Vector3();
     Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
+    bool dashing;
+
     List<int> Keys = new List<int>();
 
     public Vector3 GetTargetPoint() { return cursorPosition; }
@@ -113,8 +115,24 @@ public class PlayerController : UnitController
 
         AnimUpdate(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        
 
+        HandleDash();
+    }
+
+    void HandleDash()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            dashing = true;
+            StartCoroutine(Dash(moveDirection));
+        }
+    }
+
+    IEnumerator Dash(Vector3 moveDirect)
+    {
+        rb.velocity = moveDirect * 15f;
+        yield return new WaitForSeconds(0.25f);
+        dashing = false;
     }
 
     void AnimUpdate(float h, float v)
@@ -137,9 +155,11 @@ public class PlayerController : UnitController
 
     void FixedUpdate()
     {
-        rb.velocity = moveDirection * moveSpeed;
-
-        transform.LookAt(cursorPosition);
+        if (!dashing)
+        {
+            rb.velocity = moveDirection * moveSpeed;
+            transform.LookAt(cursorPosition);
+        }
     }
 
     void LateUpdate()
