@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         Destroy(this.gameObject, 5.0f);
+        //transform.LookAt(new Vector3(PlayerController.Instance.GetTargetPoint().x, transform.position.y, PlayerController.Instance.GetTargetPoint().z));
     }
 
     void Update()

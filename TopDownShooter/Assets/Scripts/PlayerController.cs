@@ -6,17 +6,23 @@ public class PlayerController : UnitController
 {
     public static PlayerController Instance;
 
+
     //Player variables
+    Animator animator;
+    public Transform chestBone;
     public Gun gunController;
     public Grenade grenadePrefab;
     float moveSpeed = 5.0f;
-    Rigidbody rb;
+    float speedBonus = 0f;
 
+    Rigidbody rb;
     Vector3 moveDirection = new Vector3();
     Vector3 cursorPosition = new Vector3();
     Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
     List<int> Keys = new List<int>();
+
+    public Vector3 GetTargetPoint() { return cursorPosition; }
 
     public void AddKey(int newkey)
     {
@@ -36,6 +42,7 @@ public class PlayerController : UnitController
 
     void Awake()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -54,6 +61,11 @@ public class PlayerController : UnitController
 
         rbGrenade.AddForce(addForce, ForceMode.Impulse);
     }
+
+    public void AddBonusSpeed(float time)
+    {
+        speedBonus += time;
+    }
     
     void Update()
     {
@@ -61,10 +73,16 @@ public class PlayerController : UnitController
         moveDirection.x = Input.GetAxis("Horizontal") * Time.deltaTime;
         moveDirection.z = Input.GetAxis("Vertical") * Time.deltaTime;
 
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            moveSpeed = 10f;
-        else
-            moveSpeed = 5f;
+        //animator.SetFloat("Horizontal", Input.GetAxis("Horizontal") );
+        //animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
+
+        moveSpeed = 5f;
+
+        if (speedBonus > 0)
+        {
+            moveSpeed *= 2; 
+            speedBonus -= 1.0f * Time.deltaTime;
+        }
 
         moveDirection = moveDirection.normalized;
 
@@ -93,15 +111,42 @@ public class PlayerController : UnitController
         {
             ThrowGrenade();
         }
+
+        AnimUpdate(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        
+
     }
 
-    Vector3 targetVelocity;
-    float maxVelocityChange = 3;
+    void AnimUpdate(float h, float v)
+    {
+        Vector3 moveDir = new Vector3(h, 0, v);
+
+        if (moveDir.magnitude > 1.0f)
+        {
+            moveDir = moveDir.normalized;
+        }
+
+        moveDir = transform.InverseTransformDirection(moveDir);
+
+        animator.SetFloat("Horizontal", moveDir.x, 0.05f, Time.deltaTime);
+        animator.SetFloat("Vertical", moveDir.z, 0.05f, Time.deltaTime);
+
+        if (moveDir.z < 0)
+            moveSpeed *= 0.5f;
+    }
 
     void FixedUpdate()
     {
         rb.velocity = moveDirection * moveSpeed;
+        //animator.SetFloat("Vertical", moveDirection.z, .1f, Time.deltaTime);
+        //animator.SetFloat("Horizontal", moveDirection.x, .1f, Time.deltaTime);
 
         transform.LookAt(cursorPosition);
+    }
+
+    void LateUpdate()
+    {
+        chestBone.LookAt(cursorPosition);
     }
 }
