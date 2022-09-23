@@ -16,7 +16,7 @@ public class CameraMovement : MonoBehaviour
     void LateUpdate()
     {
         Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
-        Vector3 smoothFollow = Vector3.Lerp(transform.position, targetPos, smoothSpeed);
+        Vector3 smoothFollow = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
 
         transform.position = smoothFollow;
         //transform.LookAt(player);

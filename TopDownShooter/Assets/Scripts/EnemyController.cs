@@ -114,7 +114,6 @@ public class EnemyController : UnitController
             {
                 if(hitResult.collider.gameObject == PlayerController.Instance.gameObject)
                 {
-                    print(Vector3.Angle(transform.forward, PlayerController.Instance.transform.position - transform.position));
                     if(Vector3.Angle(transform.forward, PlayerController.Instance.transform.position - transform.position) <= 70)
                         return true;
                 }

@@ -58,8 +58,8 @@ public class PlayerController : UnitController
     void Update()
     {
         //get moving direction and speed
-        moveDirection.x = Input.GetAxis("Horizontal");
-        moveDirection.z = Input.GetAxis("Vertical");
+        moveDirection.x = Input.GetAxis("Horizontal") * Time.deltaTime;
+        moveDirection.z = Input.GetAxis("Vertical") * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             moveSpeed = 10f;
