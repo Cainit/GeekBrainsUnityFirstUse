@@ -53,7 +53,6 @@ public class Grenade : MonoBehaviour
                 Vector3 addForce = direction * (50f) * distanceFactor;
                 Vector3 upForce = Vector3.up * 10f * distanceFactor;
                 rb.AddForce(addForce + upForce, ForceMode.Impulse);
-                print(distanceFactor);
             }
         }
     }

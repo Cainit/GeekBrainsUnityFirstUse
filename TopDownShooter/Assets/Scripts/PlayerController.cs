@@ -6,7 +6,6 @@ public class PlayerController : UnitController
 {
     public static PlayerController Instance;
 
-
     //Player variables
     Animator animator;
     public Transform chestBone;
@@ -57,7 +56,7 @@ public class PlayerController : UnitController
 
         Rigidbody rbGrenade = grenade.GetComponent<Rigidbody>();
 
-        Vector3 addForce = transform.forward * 10f;
+        Vector3 addForce = transform.forward * 15f;
 
         rbGrenade.AddForce(addForce, ForceMode.Impulse);
     }

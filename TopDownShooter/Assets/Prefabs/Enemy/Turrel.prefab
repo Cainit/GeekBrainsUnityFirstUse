@@ -116,12 +116,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedMove: 0
-  distantionAttack: 7
   damage: 0
+  distantionAttack: 7
+  distantionAggro: 0
+  attackReadyTime: 0.8
   soundsAggro: []
   soundsAttack: []
   soundsHit: []
   soundsDeath: []
+  patrolPoints: []
 --- !u!114 &909290442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4531468734927467382, guid: ca5a233397e2e1940ae9b0420fd63d85, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.72
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 4531468734927467382, guid: ca5a233397e2e1940ae9b0420fd63d85, type: 3}
       propertyPath: m_LocalRotation.w
