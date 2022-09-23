@@ -139,14 +139,15 @@ public class PlayerController : UnitController
     void FixedUpdate()
     {
         rb.velocity = moveDirection * moveSpeed;
-        //animator.SetFloat("Vertical", moveDirection.z, .1f, Time.deltaTime);
-        //animator.SetFloat("Horizontal", moveDirection.x, .1f, Time.deltaTime);
 
         transform.LookAt(cursorPosition);
     }
 
     void LateUpdate()
     {
-        chestBone.LookAt(cursorPosition);
+        chestBone.LookAt(cursorPosition + Vector3.up);
+        
+        
+        gunController.firePoint.LookAt(cursorPosition + Vector3.up);
     }
 }
