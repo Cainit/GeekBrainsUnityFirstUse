@@ -7,7 +7,6 @@ public class PlayerController : UnitController
     public static PlayerController Instance;
 
     //Player variables
-    public Camera playerCamera;
     public Gun gunController;
     public Grenade grenadePrefab;
     float moveSpeed = 5.0f;
@@ -58,17 +57,18 @@ public class PlayerController : UnitController
     
     void Update()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        //get moving direction and speed
+        moveDirection.x = Input.GetAxis("Horizontal");
+        moveDirection.z = Input.GetAxis("Vertical");
 
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             moveSpeed = 10f;
         else
             moveSpeed = 5f;
 
-        moveDirection.x = x * moveSpeed;
-        moveDirection.z = z * moveSpeed;
+        moveDirection = moveDirection.normalized;
 
+        //ger cursor position
         Ray casting = Camera.main.ScreenPointToRay(Input.mousePosition);
         
         float rayLenght;
@@ -80,6 +80,7 @@ public class PlayerController : UnitController
             cursorPosition.z = lookPoint.z;
         }
 
+        //get firing
         if(Input.GetMouseButtonDown(0))
         {
             gunController.isFiring = true;
@@ -94,18 +95,13 @@ public class PlayerController : UnitController
         }
     }
 
+    Vector3 targetVelocity;
+    float maxVelocityChange = 3;
+
     void FixedUpdate()
     {
-        rb.velocity = moveDirection;
-        
+        rb.velocity = moveDirection * moveSpeed;
+
         transform.LookAt(cursorPosition);
     }
-
-
-    void LateUpdate()
-    {
-        playerCamera.transform.position = new Vector3(transform.position.x, playerCamera.transform.position.y, transform.position.z);
-        //playerCamera.transform.position.z = transform.position.z;
-    }
-
 }
