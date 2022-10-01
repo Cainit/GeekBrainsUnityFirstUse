@@ -53,12 +53,15 @@ public class Door : MonoBehaviour
     {
         if(other.tag == "Player" && !Opend)
         {
+            print("open");
+
             if (NeedKey != -1 && !PlayerController.Instance.IsKey(NeedKey))
                 return;
 
             if (NeedTrigger != null && !NeedTrigger.GetTrigger())
                 return;
 
+           
             Opend = true;
             if (Timer < 0) Timer = 0;
         }

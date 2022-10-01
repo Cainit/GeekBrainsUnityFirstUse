@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
+    [SerializeField]
+    Vector3 axis;
+    [SerializeField]float speed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +17,6 @@ public class Rotator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.up);
+        transform.Rotate(axis, transform.rotation.eulerAngles.z + (speed * Time.deltaTime));
     }
 }
