@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        Instance = this;
         loadingScreen.SetActive(false);
         resumeGameButton.SetActive(false);
 
@@ -32,16 +33,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public async void NewGame()
+    public void NewGame()
     {
         newGameButton.gameObject.SetActive(false);
         resumeGameButton.SetActive(true);
         mainMenu.SetActive(false);
 
+        LoadScene("Level1");
+
+        gameOn = true;
+    }
+
+    public async void LoadScene(string sceneName)
+    {
         loadingScreen.SetActive(true);
         loadingProgress.transform.localScale = new Vector3(0, 1, 1);
 
-        var newScene = SceneManager.LoadSceneAsync("Level1");
+        var newScene = SceneManager.LoadSceneAsync(sceneName);
         newScene.allowSceneActivation = false;
 
         while (newScene.progress < 0.9f)
@@ -57,8 +65,6 @@ public class GameManager : MonoBehaviour
         newScene.allowSceneActivation = true;
 
         loadingScreen.SetActive(false);
-
-        gameOn = true;
     }
 
     void Update()
