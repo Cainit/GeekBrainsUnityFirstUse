@@ -15,12 +15,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject loadingScreen;
     [SerializeField] GameObject loadingProgress;
     [SerializeField] GameObject optionsMenu;
+    [SerializeField] GameObject messageBox;
+    [SerializeField]
+    TMPro.TextMeshProUGUI messageBoxCaption;
+    [SerializeField]
+    TMPro.TextMeshProUGUI messageBoxText;
 
     void Awake()
     {
-        Instance = this;
         loadingScreen.SetActive(false);
         resumeGameButton.SetActive(false);
+        messageBox.SetActive(false);
 
         if (Instance == null)
         {
@@ -77,6 +82,12 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
+            if (messageBox.activeSelf)
+            {
+                HideMessage();
+                return;
+            }
+
             if (paused)
                 ResumeGame();
             else
@@ -106,5 +117,21 @@ public class GameManager : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void ShowMessage(string caption, string text)
+    {
+        messageBox.SetActive(true);
+        
+        messageBoxCaption.text = caption;
+        messageBoxText.text = text;
+
+        Time.timeScale = 0;
+    }
+
+    public void HideMessage()
+    {
+        messageBox.SetActive(false);
+        Time.timeScale = 1;
     }
 }
