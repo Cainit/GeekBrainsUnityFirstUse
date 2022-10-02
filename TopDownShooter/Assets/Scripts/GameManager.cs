@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject resumeGameButton;
     [SerializeField] GameObject loadingScreen;
     [SerializeField] GameObject loadingProgress;
+    [SerializeField] GameObject optionsMenu;
 
     void Awake()
     {
@@ -64,6 +65,12 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape) && gameOn)
         {
+            if(optionsMenu.activeSelf)
+            {
+                Options.Instance.Close();
+                return;
+            }
+
             if (paused)
                 ResumeGame();
             else
@@ -83,6 +90,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         paused = false;
         mainMenu.SetActive(false);
+    }
+
+    public void OpenOptions()
+    {
+        Options.Instance.Open();
     }
 
     public void Quit()

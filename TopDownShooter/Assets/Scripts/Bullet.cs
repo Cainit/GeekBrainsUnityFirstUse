@@ -26,6 +26,7 @@ public class Bullet : MonoBehaviour
             
         }
 
-        Destroy(this.gameObject);
+        if(!other.isTrigger)
+            Destroy(this.gameObject);
     }
 }

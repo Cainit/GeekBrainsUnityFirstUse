@@ -29,7 +29,7 @@ public class TriggerPhysic : Trigger
     void OnTriggerEnter(Collider other)
     {
         Rigidbody rbOther = other.GetComponent<Rigidbody>();
-        if(rbOther)
+        if(rbOther && other.tag != "Grenade")
         {
             currentWeight += rbOther.mass;
         }
@@ -39,7 +39,7 @@ public class TriggerPhysic : Trigger
     void OnTriggerExit(Collider other)
     {
         Rigidbody rbOther = other.GetComponent<Rigidbody>();
-        if (rbOther)
+        if (rbOther && other.tag != "Grenade")
         {
             currentWeight -= rbOther.mass;
         }

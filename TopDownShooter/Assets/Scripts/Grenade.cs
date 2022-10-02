@@ -23,27 +23,43 @@ public class Grenade : MonoBehaviour
 
     void Explosion()
     {
+        explodeTime = float.MaxValue;
+
         //disable collisions
         Collider[] colliders = GetComponents<Collider>();
         foreach (Collider collider in colliders)
             collider.enabled = false;
 
+        GetComponent<AudioSource>().Play();
+
         GetComponent<MeshRenderer>().enabled = false;
 
-        Destroy(this.gameObject);
+        Destroy(this.gameObject, 3.0f);
 
         //explosion hits
         RaycastHit[] hits = Physics.SphereCastAll(transform.position + new Vector3(0,0.5f,0), maxRadius, Vector3.up);
         foreach(RaycastHit hit in hits)
         {
-            if (hit.transform.gameObject == this)
+            if (hit.transform.tag == "Grenade")
                 continue;
 
             GameObject obj = hit.transform.gameObject;
             float distanceFactor = 1f - Mathf.Clamp(Vector3.Distance(transform.position, obj.transform.position), 0, maxRadius) / maxRadius;
 
+
             if (obj.GetComponent<Health>() != null)
-                obj.GetComponent<Health>().Damage(damage * distanceFactor);
+            {
+                Vector3 half = new Vector3(0,0.5f,0);
+                Ray rayHit = new Ray(transform.position, (obj.transform.position + half) - transform.position);
+                RaycastHit hitResult;
+                if (Physics.Raycast(rayHit, out hitResult, maxRadius))
+                {
+                    if (hitResult.collider.gameObject == obj)
+                    {
+                        obj.GetComponent<Health>().Damage(damage * distanceFactor);
+                    }
+                }
+            }
 
             Rigidbody rb = obj.GetComponent<Rigidbody>();
             if (rb != null)
@@ -57,6 +73,8 @@ public class Grenade : MonoBehaviour
         }
     }
 
+    
+    
     /*
     void OnTriggerEnter(Collider other)
     {
