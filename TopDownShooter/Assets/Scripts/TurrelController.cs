@@ -18,9 +18,10 @@ public class TurrelController : UnitController
             return;
 
         //if(GetDistToPlayer() <= distantionAttack)
-        transform.LookAt(new Vector3(PlayerController.Instance.transform.position.x, transform.position.y, PlayerController.Instance.transform.position.z));
+        GetComponentInChildren<Gun>().transform.LookAt(new Vector3(PlayerController.Instance.transform.position.x, transform.position.y, PlayerController.Instance.transform.position.z));
     }
 
+    
     void FixedUpdate()
     {
         if (PlayerController.Instance == null)
