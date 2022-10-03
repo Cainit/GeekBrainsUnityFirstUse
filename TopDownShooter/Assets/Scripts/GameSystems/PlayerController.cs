@@ -7,6 +7,8 @@ public class PlayerController : UnitController
 {
     public static PlayerController Instance;
 
+    public EventHandler OnGrenades;
+
     //Player variables
     Animator animator;
     public Transform chestBone;
@@ -14,6 +16,7 @@ public class PlayerController : UnitController
     public Grenade grenadePrefab;
     float moveSpeed = 5.0f;
     float speedBonus = 0f;
+    public int grenades = 3;
 
     Rigidbody rb;
     Vector3 moveDirection = new Vector3();
@@ -25,6 +28,12 @@ public class PlayerController : UnitController
     List<int> Keys = new List<int>();
 
     public Vector3 GetTargetPoint() { return cursorPosition; }
+
+    public void AddGrenades(int i)
+    {
+        grenades += i;
+        OnGrenades?.Invoke(this, EventArgs.Empty);
+    }
 
     public void AddKey(int newkey)
     {
@@ -66,6 +75,8 @@ public class PlayerController : UnitController
     
     void ThrowGrenade()
     {
+        --grenades;
+
         Grenade grenade = Instantiate(grenadePrefab, this.transform.position+(Vector3.up*2.5f), Quaternion.identity, this.transform.parent);
 
         Rigidbody rbGrenade = grenade.GetComponent<Rigidbody>();
@@ -73,6 +84,8 @@ public class PlayerController : UnitController
         Vector3 addForce = transform.forward * 15f;
 
         rbGrenade.AddForce(addForce, ForceMode.Impulse);
+
+        OnGrenades?.Invoke(this, EventArgs.Empty);
     }
 
     public void AddBonusSpeed(float time)
@@ -120,7 +133,7 @@ public class PlayerController : UnitController
         {
             gunController.isFiring = false;
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && grenades > 0)
         {
             ThrowGrenade();
         }

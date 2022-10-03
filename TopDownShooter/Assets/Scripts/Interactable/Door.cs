@@ -61,7 +61,7 @@ public class Door : MonoBehaviour
             if (NeedTrigger != null && !NeedTrigger.GetTrigger())
                 return;
 
-           
+            GetComponent<AudioSource>().Play();
             Opend = true;
             if (Timer < 0) Timer = 0;
         }
@@ -72,6 +72,7 @@ public class Door : MonoBehaviour
         if (other.tag == "Player" && Opend)
         {
             Opend = false;
+            GetComponent<AudioSource>().Play();
             if (Timer > 0) Timer = 1;
         }
     }

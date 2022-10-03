@@ -10,7 +10,7 @@ public class Trap : Interactable
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" || other.tag == "Enemy")
+        if (other.tag == "Player" || other.tag == "Enemy" || other.tag == "Physic")
         {
             GameObject expl = Instantiate(explosionPref, transform.position, Quaternion.identity, transform.parent);
             Destroy(expl, 2f);

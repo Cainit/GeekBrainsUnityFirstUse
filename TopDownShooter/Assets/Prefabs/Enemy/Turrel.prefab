@@ -124,7 +124,8 @@ MonoBehaviour:
   soundsAggro: []
   soundsAttack: []
   soundsHit: []
-  soundsDeath: []
+  soundsDeath:
+  - {fileID: 8300000, guid: 6ddc794aa0a17ec4ca472e5ae3d50206, type: 3}
   patrolPoints: []
   explosionPref: {fileID: 8130824357869285893, guid: 1fdc0e7aa830c7a48a5264303cfc3a97, type: 3}
 --- !u!114 &909290442

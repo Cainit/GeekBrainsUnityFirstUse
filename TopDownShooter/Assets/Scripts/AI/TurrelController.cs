@@ -18,8 +18,12 @@ public class TurrelController : UnitController
     {
         if (!GetComponent<Health>().IsLive())
         {
-            Death();
+            PlaySoundDeath();
+            GetComponent<Collider>().enabled = false;
+            Destroy(gameObject, 1f);
+            distantionAttack = 0;
             GameObject expl = Instantiate(explosionPref, transform.position, Quaternion.identity, transform.parent);
+            expl.transform.localScale = new Vector3(2,2,2);
             Destroy(expl, 2f);
         }
     }

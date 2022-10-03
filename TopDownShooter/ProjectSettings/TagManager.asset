@@ -11,6 +11,7 @@ TagManager:
   - Trigger
   - Waypoint
   - Grenade
+  - Physic
   layers:
   - Default
   - TransparentFX
