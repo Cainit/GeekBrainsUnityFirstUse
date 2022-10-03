@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class TriggerMessage : MonoBehaviour
+public class TriggerMessage : Trigger
 {
     [SerializeField]
     string caption = "";
@@ -19,6 +19,9 @@ public class TriggerMessage : MonoBehaviour
     {
         if(other.tag == "Player")
         {
+            if (oneShot)
+                GetComponent<Collider>().enabled = false;
+
             GameManager.Instance.ShowMessage(caption, text);
         }
     }

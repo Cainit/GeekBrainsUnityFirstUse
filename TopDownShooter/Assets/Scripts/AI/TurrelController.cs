@@ -1,14 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TurrelController : UnitController
 {
-    
+    [SerializeField]
+    GameObject explosionPref;
+
     // Start is called before the first frame update
     void Start()
     {
         GetComponent<Health>().OnDamage += OnHit;
+    }
+
+    override public void OnHit(object sender, EventArgs args)
+    {
+        if (!GetComponent<Health>().IsLive())
+        {
+            Death();
+            GameObject expl = Instantiate(explosionPref, transform.position, Quaternion.identity, transform.parent);
+            Destroy(expl, 2f);
+        }
     }
 
     // Update is called once per frame

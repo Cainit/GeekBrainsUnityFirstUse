@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -8229762832114914988}
   m_Layer: 0
   m_Name: BulletBluster
-  m_TagString: Untagged
+  m_TagString: Grenade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,6 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 25
   damage: 2
+  impactPref: {fileID: 1579546626485678, guid: 7db58c0e931b44d52826ad1829194c32, type: 3}
 --- !u!108 &7357061807623973702
 Light:
   m_ObjectHideFlags: 0

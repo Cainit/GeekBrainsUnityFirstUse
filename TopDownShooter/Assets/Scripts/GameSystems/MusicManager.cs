@@ -20,7 +20,7 @@ public class MusicManager : MonoBehaviour
     
     public void SetMusicVolume(float volume)
     {
-        audioMixer.SetFloat("Music", Mathf.Lerp(-20f, 0f, volume));
+        audioMixer.SetFloat("Music", Mathf.Lerp(-40f, -20f, volume));
     }
 
     public void SetMasterVolume(float volume)

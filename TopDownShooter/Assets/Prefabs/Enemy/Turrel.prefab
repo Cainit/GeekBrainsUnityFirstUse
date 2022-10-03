@@ -126,6 +126,7 @@ MonoBehaviour:
   soundsHit: []
   soundsDeath: []
   patrolPoints: []
+  explosionPref: {fileID: 8130824357869285893, guid: 1fdc0e7aa830c7a48a5264303cfc3a97, type: 3}
 --- !u!114 &909290442
 MonoBehaviour:
   m_ObjectHideFlags: 0

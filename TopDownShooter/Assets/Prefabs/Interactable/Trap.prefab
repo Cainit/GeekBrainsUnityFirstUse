@@ -208,6 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   getUpSound: {fileID: 8300000, guid: 6ddc794aa0a17ec4ca472e5ae3d50206, type: 3}
   damage: 10
+  explosionPref: {fileID: 8130824357869285893, guid: 1fdc0e7aa830c7a48a5264303cfc3a97, type: 3}
 --- !u!82 &-6221261503827831917
 AudioSource:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerController : UnitController
 {
@@ -39,6 +40,15 @@ public class PlayerController : UnitController
         }
 
         return false;
+    }
+
+    override public void OnHit(object sender, EventArgs args)
+    {
+        if (!GetComponent<Health>().IsLive())
+        {
+            Death();
+            GameManager.Instance.PlayerDeath();
+        }
     }
 
     void Awake()
@@ -160,6 +170,7 @@ public class PlayerController : UnitController
             rb.velocity = moveDirection * moveSpeed;
             transform.LookAt(cursorPosition);
         }
+        
     }
 
     void LateUpdate()

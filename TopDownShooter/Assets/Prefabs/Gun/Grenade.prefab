@@ -194,6 +194,7 @@ MonoBehaviour:
   damage: 15
   explodeTime: 2
   maxRadius: 5
+  explosionPref: {fileID: 1678728823176512, guid: 6a342b4d22c62404baf7bd6057f1bdb3, type: 3}
 --- !u!82 &1164300998706477475
 AudioSource:
   m_ObjectHideFlags: 0

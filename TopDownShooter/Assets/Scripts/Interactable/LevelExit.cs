@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class LevelExit : MonoBehaviour
+public class LevelExit : Trigger
 {
     [SerializeField]
     string nextScene = "";
@@ -17,6 +17,9 @@ public class LevelExit : MonoBehaviour
     {
         if(other.tag == "Player")
         {
+            if(oneShot)
+                GetComponent<Collider>().enabled = false;
+
             Debug.Log("Level exit trigger!");
 
             if (nextScene == "")

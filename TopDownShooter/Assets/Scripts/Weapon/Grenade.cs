@@ -10,6 +10,8 @@ public class Grenade : MonoBehaviour
     float explodeTime;
     [SerializeField]
     float maxRadius;
+    [SerializeField]
+    GameObject explosionPref;
 
     void Update()
     {
@@ -23,6 +25,8 @@ public class Grenade : MonoBehaviour
 
     void Explosion()
     {
+        GameObject expl = Instantiate(explosionPref, transform.position, Quaternion.identity, transform.parent);
+        Destroy(expl, 2f);
         explodeTime = float.MaxValue;
 
         //disable collisions

@@ -6,6 +6,8 @@ public class Bullet : MonoBehaviour
 {
     public float speed;
     public float damage;
+    [SerializeField]
+    GameObject impactPref;
 
     void Start()
     {
@@ -26,7 +28,11 @@ public class Bullet : MonoBehaviour
             
         }
 
-        if(!other.isTrigger)
+        if (!other.isTrigger)
+        {
             Destroy(this.gameObject);
+            GameObject expl = Instantiate(impactPref, transform.position, Quaternion.identity, transform.parent);
+            Destroy(expl, 2f);
+        }
     }
 }

@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     TMPro.TextMeshProUGUI messageBoxText;
 
+    private string currentScene;
+
     void Awake()
     {
         loadingScreen.SetActive(false);
@@ -51,6 +53,8 @@ public class GameManager : MonoBehaviour
 
     public async void LoadScene(string sceneName)
     {
+        currentScene = sceneName;
+
         loadingScreen.SetActive(true);
         loadingProgress.transform.localScale = new Vector3(0, 1, 1);
 
@@ -70,6 +74,8 @@ public class GameManager : MonoBehaviour
         newScene.allowSceneActivation = true;
 
         loadingScreen.SetActive(false);
+
+        gameOn = true;
     }
 
     void Update()
@@ -100,6 +106,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         paused = true;
         mainMenu.SetActive(true);
+        PlayerController.Instance.enabled = false;
     }
 
     public void ResumeGame()
@@ -107,6 +114,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         paused = false;
         mainMenu.SetActive(false);
+        PlayerController.Instance.enabled = true;
     }
 
     public void OpenOptions()
@@ -126,12 +134,24 @@ public class GameManager : MonoBehaviour
         messageBoxCaption.text = caption;
         messageBoxText.text = text;
 
+        PlayerController.Instance.enabled = false;
         Time.timeScale = 0;
     }
 
     public void HideMessage()
     {
         messageBox.SetActive(false);
+        if(PlayerController.Instance != null)
+            PlayerController.Instance.enabled = true;
         Time.timeScale = 1;
+
+        if (!gameOn)
+            LoadScene(currentScene);
+    }
+
+    public void PlayerDeath()
+    {
+        ShowMessage("Game over", "You are dead. Level will be reload.");
+        gameOn = false;
     }
 }
