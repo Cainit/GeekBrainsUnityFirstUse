@@ -7,6 +7,8 @@ public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance;
     [SerializeField] AudioMixer audioMixer;
+
+    private AudioSource musicSource;
     
     void Awake()
     {
@@ -30,6 +32,15 @@ public class MusicManager : MonoBehaviour
 
     public void PlayMusic()
     {
-        GetComponent<AudioSource>().Play();
+        musicSource = GetComponent<AudioSource>();
+        musicSource.Play();
+    }
+
+    public void CheckMusicTemp(float percentHealth)
+    {
+        if (percentHealth < 0.5f)
+            musicSource.pitch = 2f;
+        else
+            musicSource.pitch = 1f;
     }
 }

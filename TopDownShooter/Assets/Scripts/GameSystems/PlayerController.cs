@@ -44,6 +44,8 @@ public class PlayerController : UnitController
 
     override public void OnHit(object sender, EventArgs args)
     {
+        //MusicManager.Instance.CheckMusicTemp(GetComponent<Health>().GetInPercent());
+
         if (!GetComponent<Health>().IsLive())
         {
             Death();
