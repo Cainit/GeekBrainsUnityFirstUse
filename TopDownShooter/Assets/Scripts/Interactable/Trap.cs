@@ -15,7 +15,9 @@ public class Trap : Interactable
             GameObject expl = Instantiate(explosionPref, transform.position, Quaternion.identity, transform.parent);
             Destroy(expl, 2f);
 
-            other.GetComponent<Health>().Damage(damage);
+            if(other.GetComponent<Health>() != null)
+                other.GetComponent<Health>().Damage(damage);
+
             GetComponent<Collider>().enabled = false;
             GetComponent<MeshRenderer>().enabled = false;
             PlayGetUp();
