@@ -1,0 +1,177 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager Instance;
+    bool gameOn;
+    bool paused;
+    bool win;
+    [SerializeField] GameObject mainMenu;
+    [SerializeField] GameObject newGameButton;
+    [SerializeField] GameObject resumeGameButton;
+    [SerializeField] GameObject loadingScreen;
+    [SerializeField] GameObject loadingProgress;
+    [SerializeField] GameObject optionsMenu;
+    [SerializeField] GameObject messageBox;
+    [SerializeField]
+    TMPro.TextMeshProUGUI messageBoxCaption;
+    [SerializeField]
+    TMPro.TextMeshProUGUI messageBoxText;
+
+    private string currentScene;
+
+    void Awake()
+    {
+        loadingScreen.SetActive(false);
+        resumeGameButton.SetActive(false);
+        messageBox.SetActive(false);
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void NewGame()
+    {
+        newGameButton.gameObject.SetActive(false);
+        resumeGameButton.SetActive(true);
+        mainMenu.SetActive(false);
+
+        LoadScene("Level1");
+
+        gameOn = true;
+    }
+
+    public async void LoadScene(string sceneName)
+    {
+        currentScene = sceneName;
+
+        loadingScreen.SetActive(true);
+        loadingProgress.transform.localScale = new Vector3(0, 1, 1);
+
+        var newScene = SceneManager.LoadSceneAsync(sceneName);
+        newScene.allowSceneActivation = false;
+
+        while (newScene.progress < 0.9f)
+        {
+            loadingProgress.transform.localScale = new Vector3(newScene.progress, 1, 1);
+            await Task.Delay(10);
+        }
+
+        loadingProgress.transform.localScale = new Vector3(1, 1, 1);
+        //for  screen
+        await Task.Delay(1000);
+
+        newScene.allowSceneActivation = true;
+
+        loadingScreen.SetActive(false);
+
+        gameOn = true;
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape) && gameOn)
+        {
+            if(optionsMenu.activeSelf)
+            {
+                Options.Instance.Close();
+                return;
+            }
+
+            if (messageBox.activeSelf)
+            {
+                HideMessage();
+                return;
+            }
+
+            if (paused)
+                ResumeGame();
+            else
+                PauseGame();
+        }
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        paused = true;
+        mainMenu.SetActive(true);
+        PlayerController.Instance.enabled = false;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        paused = false;
+        mainMenu.SetActive(false);
+        PlayerController.Instance.enabled = true;
+    }
+
+    public void OpenOptions()
+    {
+        Options.Instance.Open();
+    }
+
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_WEBPLAYER
+                Application.OpenURL(webplayerQuitURL);
+#else
+                Application.Quit();
+#endif
+    }
+
+    public void ShowMessage(string caption, string text)
+    {
+        messageBox.SetActive(true);
+        
+        messageBoxCaption.text = caption;
+        messageBoxText.text = text;
+
+        PlayerController.Instance.enabled = false;
+        Time.timeScale = 0;
+    }
+
+    public void HideMessage()
+    {
+        messageBox.SetActive(false);
+        if(PlayerController.Instance != null)
+            PlayerController.Instance.enabled = true;
+        Time.timeScale = 1;
+
+        if (!gameOn)
+        {
+            if (!win)
+                LoadScene(currentScene);
+            else
+                Quit();
+        }
+    }
+
+    public void PlayerDeath()
+    {
+        ShowMessage("Game over", "You are dead. Level will be reload.");
+        gameOn = false;
+    }
+
+    public void Win()
+    {
+        ShowMessage("Congratulation!", "You win this game. Click on button for close game.");
+        gameOn = false;
+        win = true;
+    }
+    
+}
