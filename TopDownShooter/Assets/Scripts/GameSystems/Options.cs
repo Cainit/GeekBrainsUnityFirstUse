@@ -15,6 +15,8 @@ public class Options : MonoBehaviour
     TMP_Dropdown dropdownQuality;
     [SerializeField]
     UnityEngine.UI.Slider sliderAudio;
+    [SerializeField]
+    UnityEngine.UI.Slider sliderMusic;
 
     Resolution[] resolutions;
 
@@ -25,6 +27,7 @@ public class Options : MonoBehaviour
         //create quality list
         dropdownQuality.ClearOptions();
         dropdownQuality.AddOptions(new List<string>(QualitySettings.names));
+        dropdownQuality.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
 
         //create resolution list
         dropdownResolution.ClearOptions();
@@ -35,6 +38,7 @@ public class Options : MonoBehaviour
             resNames.Add(res.width+"x"+res.height);
         }
         dropdownResolution.AddOptions(resNames);
+        dropdownResolution.SetValueWithoutNotify(resolutions.Length-1);
 
         //close options
         Close();
@@ -73,6 +77,11 @@ public class Options : MonoBehaviour
 
     public void AudioChange()
     {
+        MusicManager.Instance.SetMasterVolume(sliderAudio.value);
+    }
 
+    public void MusicChange()
+    {
+        MusicManager.Instance.SetMusicVolume(sliderAudio.value);
     }
 }
