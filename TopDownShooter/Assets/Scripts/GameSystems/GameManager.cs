@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     bool gameOn;
     bool paused;
+    bool win;
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject newGameButton;
     [SerializeField] GameObject resumeGameButton;
@@ -124,7 +125,13 @@ public class GameManager : MonoBehaviour
 
     public void Quit()
     {
-        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_WEBPLAYER
+                Application.OpenURL(webplayerQuitURL);
+#else
+                Application.Quit();
+#endif
     }
 
     public void ShowMessage(string caption, string text)
@@ -146,7 +153,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         if (!gameOn)
-            LoadScene(currentScene);
+        {
+            if (!win)
+                LoadScene(currentScene);
+            else
+                Quit();
+        }
     }
 
     public void PlayerDeath()
@@ -154,4 +166,12 @@ public class GameManager : MonoBehaviour
         ShowMessage("Game over", "You are dead. Level will be reload.");
         gameOn = false;
     }
+
+    public void Win()
+    {
+        ShowMessage("Congratulation!", "You win this game. Click on button for close game.");
+        gameOn = false;
+        win = true;
+    }
+    
 }
